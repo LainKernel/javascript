@@ -100,4 +100,4 @@ function addBlackSpot(obj) {
     obj[blackSpotSymbol] = true;
     return obj;
 }
-export { pow, sumTo, isLeapYear, factorial, fib, compare, sum, addBlackSpot };
+
