@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Считать ворон</title>
+    <style>
+        label {
+            margin-bottom: 5px;
+        }
+        input {
+            padding: 5px; width: 150px;
+        }
+        button {
+            padding: 5px 15px; margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h2>Считать ворон</h2>
+    <form id="crowForm">
+        <div>
+            <label for="num">Введите количество ворон:</label>
+            <input type="number" id="num" required min="0" step="1">
+            <button type="submit">Считать</button>
+        </div>
+    </form>
+
+    <script src="js/lab1_2.js"></script>
+</body>
+</html>
