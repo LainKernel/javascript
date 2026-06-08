@@ -1,42 +1,31 @@
 'use strict';
 
-// Импорт функции fib из лабы 2
 import { fib } from '../lab3/lab2fib.js';
-
 /**
- * Возвращает дробную часть числа.
- * Для отрицательных чисел возвращает дополнение до 1 (например, -1.23 → 0.77).
- * @param {number} num - Исходное число.
- * @returns {number} Дробная часть числа.
+ * Возвращает дробную часть числа
+ * @param {number} num - Исходное число
+ * @returns {number} Дробная часть числа
  */
 export function getDecimal(num) {
-    const absNum = Math.abs(num);
-    const absDecimal = absNum - Math.floor(absNum);
-    
-    if (num < 0 && absDecimal > 0) {
-        return Number((1 - absDecimal).toFixed(10));
-    }
-    return Number(absDecimal.toFixed(10));
+    const fractional = num - Math.floor(num);
+    return Math.round(fractional * 100) / 100;
 }
 
 /**
- * Нормализует URL, приводя его к виду "https://...".
- * Удаляет существующие протоколы "http://" или "https://" и добавляет "https://".
- * @param {string} url - Исходный адрес сайта.
- * @returns {string} Нормализованный URL с протоколом https.
+ * Нормализует URL, добавляя https:// в начало
+ * @param {string} url - Исходный URL
+ * @returns {string} Нормализованный URL с https://
  */
 export function normalizeUrl(url) {
-    const protocol = 'https://';
-    if (url.startsWith('https://')) return url;
-    if (url.startsWith('http://')) return protocol + url.slice(7);
-    return protocol + url;
+    let result = url.toLowerCase();
+    result = result.replace(/^https?:\/\//, '');
+    return 'https://' + result;
 }
 
 /**
- * Проверяет строку на наличие запрещённых слов ('viagra' или 'xxx').
- * Проверка выполняется без учёта регистра.
- * @param {string} str - Исходная строка для проверки.
- * @returns {boolean} true, если строка содержит спам; false в противном случае.
+ * Проверяет наличие спама в строке (viagra или XXX)
+ * @param {string} str - Проверяемая строка
+ * @returns {boolean} true, если строка содержит спам, иначе false
  */
 export function checkSpam(str) {
     const lowerStr = str.toLowerCase();
@@ -44,32 +33,45 @@ export function checkSpam(str) {
 }
 
 /**
- * Усекает строку до указанной длины, добавляя символ многоточия в конце.
- * Если длина строки не превышает maxlength, возвращает строку без изменений.
- * @param {string} str - Исходная строка.
- * @param {number} maxlength - Максимальная длина результирующей строки (включая многоточие).
- * @returns {string} Усечённая строка с многоточием или исходная строка.
+ * Усекает строку до заданной длины, добавляя многоточие в конце
+ * @param {string} str - Исходная строка
+ * @param {number} maxlength - Максимальная длина строки
+ * @returns {string} Усечённая строка
  */
 export function truncate(str, maxlength) {
-    if (str.length <= maxlength) return str;
+    if (str.length <= maxlength) {
+        return str;
+    }
     return str.slice(0, maxlength - 1) + '…';
 }
 
 /**
- * Преобразует строку вида "my-short-string" в camelCase "myShortString".
- * Дефисы удаляются, а следующие за ними символы приводятся к верхнему регистру.
- * @param {string} str - Исходная строка с дефисами.
- * @returns {string} Строка в формате camelCase.
+ * Преобразует строку с дефисами в camelCase
+ * @param {string} str - Исходная строка (например, 'var-test-text')
+ * @returns {string} Преобразованная строка в camelCase
  */
 export function camelize(str) {
-    return str.replace(/-+(.)/g, (match, char) => char.toUpperCase());
+    const words = str.split('-');
+    for (let i = 1; i < words.length; i++) {
+        words[i] = ucFirst(words[i]);
+    }
+    return words.join('');
 }
 
 /**
- * Возвращает массив чисел Фибоначчи от 0-го до (n-1)-го включительно.
- * Использует импортированную функцию fib() для вычисления каждого элемента.
- * @param {number} n - Количество элементов в массиве (натуральное число).
- * @returns {bigint[]} Массив, содержащий первые n чисел Фибоначчи типа BigInt.
+ * Делает первую букву строки заглавной
+ * @param {string} str - Исходная строка
+ * @returns {string} Строка с заглавной первой буквой
+ */
+function ucFirst(str) {
+    if (!str) return str;
+    return str[0].toUpperCase() + str.slice(1);
+}
+
+/**
+ * Возвращает массив чисел Фибоначчи до n-го (не включая его)
+ * @param {number} n - Количество чисел Фибоначчи (натуральное число)
+ * @returns {bigint[]} Массив чисел Фибоначчи
  */
 export function fibs(n) {
     const result = [];
@@ -80,22 +82,19 @@ export function fibs(n) {
 }
 
 /**
- * Возвращает новый массив, отсортированный по убыванию.
- * Исходный массив не изменяется (создаётся копия).
- * @param {number[]} arr - Исходный массив чисел.
- * @returns {number[]} Новый массив, отсортированный от большего к меньшему.
+ * Возвращает новый массив, отсортированный по убыванию, не изменяя исходный
+ * @param {number[]} arr - Исходный массив чисел
+ * @returns {number[]} Новый массив, отсортированный по убыванию
  */
 export function arrReverseSorted(arr) {
-    const copy = [...arr];
-    return copy.sort((a, b) => b - a);
+    return [...arr].sort((a, b) => b - a);
 }
 
 /**
- * Возвращает массив уникальных значений из исходного массива.
- * Использует объект Set для фильтрации дубликатов.
- * @param {Array} arr - Исходный массив с возможными повторениями.
- * @returns {Array} Массив, содержащий только уникальные значения.
+ * Возвращает массив уникальных значений из исходного массива
+ * @param {any[]} arr - Исходный массив с возможными повторениями
+ * @returns {any[]} Массив уникальных значений
  */
 export function unique(arr) {
-    return Array.from(new Set(arr));
+    return [...new Set(arr)];
 }
