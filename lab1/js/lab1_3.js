@@ -1,17 +1,18 @@
 'use strict';
 
 document.getElementById('numbLink').addEventListener('click', function(event) {
+    event.preventDefault();
+
     const success = askForNumber();
 
-    if (!success){
+    if (success) {
+        window.location.href = 'index.html';
+    } else {
         const allowTransition = confirm("Вы не ввели нужное число. Вы всё равно хотите перейти на главную страницу?");
-        if (!allowTransition) {
+        if (allowTransition) {
             window.location.href = 'index.html';
         }
     }
-
-
-
 });
 
 const askForNumber = () => {
