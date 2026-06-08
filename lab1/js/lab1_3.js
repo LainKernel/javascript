@@ -6,11 +6,11 @@ document.getElementById('numbLink').addEventListener('click', function(event) {
     const success = askForNumber();
 
     if (success) {
-        window.location.href = 'index.html';
+        window.location.href = '../index.html';
     } else {
         const allowTransition = confirm("Вы не ввели нужное число. Вы всё равно хотите перейти на главную страницу?");
         if (allowTransition) {
-            window.location.href = 'index.html';
+            window.location.href = '../index.html';
         }
     }
 });
