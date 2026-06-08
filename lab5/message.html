@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 5: Скрытие сообщений</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        /* Общий контейнер для всех сообщений */
+        .messages-list {
+            max-width: 500px;  /* Чуть увеличили ширину для лучшей читаемости длинных текстов */
+            margin: 40px auto; /* Первое значение (40px) — отступ сверху/снизу, auto — центрирует по горизонтали */
+        }
+
+        /* Карточка отдельного сообщения */
+        .message {
+            position: relative; 
+            background-color: #f4fdf0; 
+            border: 1px solid #d6ebd0;
+            padding: 15px 35px 15px 15px; 
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02); /* Легкая тень для объема */
+        }
+
+        /* Заголовки внутри сообщений */
+        .message h3 {
+            margin: 0 0 8px 0;
+            font-size: 1.1rem;
+            color: #2c3e50;
+        }
+
+        /* Текст сообщения */
+        .message p {
+            margin: 0;
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.4;
+        }
+
+        /* Кнопка закрытия [x] в правом верхнем углу */
+        .remove-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: 1px solid #f5c2c2;
+            color: #c93b3b;
+            padding: 0 4px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            border-radius: 3px;
+            background-color: #fff5f5;
+        }
+
+        .remove-button:hover {
+            background-color: #ffe3e3;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Контейнер теперь строго по центру -->
+    <div class="messages-list" id="messagesContainer">
+
+        <div class="message">
+            <button class="remove-button">[x]</button>
+            <h3>Лошадь</h3>
+            <p>Домашняя лошадь — животное семейства непарнокопытных, одомашненный и единственный сохранившийся подвид дикой лошади, вымершей в дикой природе, за исключением небольшой популяции лошади Пржевальского.</p>
+        </div>
+
+        <div class="message">
+            <button class="remove-button">[x]</button>
+            <h3>Осёл</h3>
+            <p>Домашний осёл или ишак — одомашненный подвид дикого осла, сыгравший важную историческую роль в развитии хозяйства и культуры человека. Все одомашненные ослы относятся к африканским ослам.</p>
+        </div>
+
+        <div class="message">
+            <button class="remove-button">[x]</button>
+            <h3>Корова, а также пара слов о диком быке, о волах и о тёлках.</h3>
+            <p>Корова — самка домашнего быка, одомашненного подвида дикого быка, парнокопытного жвачного животного семейства полорогих. Самцы вида называются быками, молодняк — телятами, кастрированные самцы — волами. Молодых (до первой стельности) самок называют тёлками.</p>
+        </div>
+
+    </div>
+
+    <script>
+        'use strict';
+
+        const container = document.getElementById('messagesContainer');
+
+        container.addEventListener('click', function(event) {
+            if (event.target.classList.contains('remove-button')) {
+                const messageBlock = event.target.closest('.message');
+                messageBlock.remove();
+            }
+        });
+    </script>
+</body>
+</html>

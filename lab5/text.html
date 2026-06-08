@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 3: Переключатель текста</title>
+</head>
+<body>
+
+    <!-- Кнопка-переключатель -->
+    <button id="toggleButton">Спрятать текст</button>
+
+    <!-- Скрываемый элемент -->
+    <div id="text">Текст</div>
+
+    <script>
+        'use strict';
+
+        const button = document.getElementById('toggleButton');
+        const textBlock = document.getElementById('text');
+
+        button.addEventListener('click', function() {
+            // Используем встроенный атрибут hidden для скрытия элементов по умолчанию
+            if (textBlock.hidden) {
+                textBlock.hidden = false;
+                button.textContent = 'Спрятать текст';
+            } else {
+                textBlock.hidden = true;
+                button.textContent = 'Показать текст';
+            }
+        });
+    </script>
+</body>
+</html>

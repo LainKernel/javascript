@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 2: Создание дерева из объекта</title>
+</head>
+<body>
+    <h2>Дерево категорий (Вложенный список)</h2>
+    <div id="container"></div>
+
+    <script>
+        'use strict';
+
+        /**
+         * Создает вложенный список ul/li из объекта данных и вставляет его в контейнер.
+         * @param {HTMLElement} container - DOM-элемент, куда будет вставлено дерево.
+         * @param {Object} data - Исходный объект с вложенной структурой категорий.
+         */
+        function createTree(container, data) {
+            if (Object.keys(data).length === 0) return;
+            const ul = document.createElement('ul');
+
+            for (const key in data) {
+                const li = document.createElement('li');
+                li.textContent = key;
+
+                createTree(li, data[key]);
+
+                ul.append(li);
+            }
+
+            container.append(ul);
+        }
+
+        const data = {
+            "Рыбы": {
+                "форель": {},
+                "лосось": {}
+            },
+            "Деревья": {
+                "Огромные": {
+                    "секвойя": {},
+                    "дуб": {}
+                },
+                "Цветковые": {
+                    "яблоня": {},
+                    "магнолия": {}
+                }
+            }
+        };
+
+        const container = document.getElementById('container');
+
+        createTree(container, data);
+    </script>
+</body>
+</html>

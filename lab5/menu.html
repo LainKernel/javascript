@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Интерактивное меню</title>
+    <style>
+        .menu {
+            font-family: sans-serif;
+            margin: 20px;
+        }
+
+        .menu-title {
+            font-size: 1.1rem;
+            cursor: pointer;
+            user-select: none; 
+        }
+
+        .menu-title::before {
+            content: '▶';
+            color: #008000;
+            display: inline-block;
+            margin-right: 6px;
+            font-size: 0.85rem;
+        }
+
+        .menu.open .menu-title::before {
+            content: '▼';
+        }
+
+        .menu-list {
+            margin: 5px 0 0 0;
+            padding-left: 20px;
+            list-style: none; 
+            display: none;
+        }
+
+        .menu.open .menu-list {
+            display: block;
+        }
+
+        .menu-list li {
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="menu open" id="sweetMenu">
+        <div class="menu-title">Сладости (нажми меня)!</div>
+        <ul class="menu-list">
+            <li>Торт</li>
+            <li>Пончик</li>
+            <li>Пирожное</li>
+        </ul>
+    </div>
+
+    <script>
+        'use strict';
+
+        const menu = document.getElementById('sweetMenu');
+        const title = menu.querySelector('.menu-title');
+
+        title.addEventListener('click', function() {
+            menu.classList.toggle('open');
+        });
+    </script>
+</body>
+</html>
