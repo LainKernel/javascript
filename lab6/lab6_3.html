@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 3: Интерактивный редактор</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 40px;
+            background-color: #f9f9f9;
+        }
+        #viewBlock {
+            padding: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            min-height: 100px;
+            width: 400px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #editBlock {
+            padding: 10px;
+            font-family: sans-serif;
+            font-size: 1rem;
+            width: 422px; 
+            height: 122px;
+            border: 1px solid #0056b3;
+            border-radius: 4px;
+            outline: none;
+            box-sizing: border-box;
+        }
+        .hint {
+            margin-top: 10px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div id="viewBlock"></div>
+
+    <p class="hint">
+        Нажмите <strong>Ctrl + E</strong> для редактирования.<br>
+        Нажмите <strong>Ctrl + S</strong> для сохранения или <strong>Esc</strong> для отмены.
+    </p>
+
+    <script>
+        'use strict';
+
+        const viewBlock = document.getElementById('viewBlock');
+        
+
+        const savedData = localStorage.getItem('editableText');
+        viewBlock.innerHTML = savedData ? savedData : 'Нажмите <strong>Ctrl+E</strong>, чтобы отредактировать этот текст.';
+
+        document.addEventListener('keydown', function(event) {
+            
+
+            if ((event.ctrlKey || event.metaKey) && event.code === 'KeyE') {
+                if (document.getElementById('editBlock')) return;
+
+                event.preventDefault();
+
+                const textarea = document.createElement('textarea');
+                textarea.id = 'editBlock';
+                textarea.value = viewBlock.innerHTML;
+
+                viewBlock.replaceWith(textarea);
+                textarea.focus(); 
+            }
+
+            const textarea = document.getElementById('editBlock');
+            if (!textarea) return; 
+
+            if ((event.ctrlKey || event.metaKey) && event.code === 'KeyS') {
+                event.preventDefault();
+
+
+                viewBlock.innerHTML = textarea.value;
+
+                localStorage.setItem('editableText', textarea.value);
+
+                textarea.replaceWith(viewBlock);
+            }
+
+            if (event.code === 'Escape') {
+                event.preventDefault();
+                textarea.replaceWith(viewBlock);
+            }
+        });
+    </script>
+</body>
+</html>

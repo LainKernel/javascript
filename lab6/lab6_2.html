@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 2: Кастомный плейсхолдер</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            margin: 50px;
+            background-color: #f9f9f9;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-top: 30px;
+            width: 300px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            outline: none;
+        }
+      
+        .placeholder-label {
+            position: absolute;
+            left: 10px;
+            top: 11px;
+            font-size: 1rem;
+            pointer-events: none; 
+            transition: all 0.2s ease;
+            color: #777;
+        }
+
+        .placeholder-label.placeholder {
+            color: #0d78ea;
+        }
+
+        .placeholder-label.active {
+            top: -20px;
+            left: 5px;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="input-wrapper">
+        <input type="text" id="myInput" data-placeholder="Введите ваше имя">
+    </div>
+
+    <script>
+        'use strict';
+
+        const input = document.getElementById('myInput');
+        const wrapper = input.parentElement;
+
+        const label = document.createElement('span');
+        label.className = 'placeholder-label placeholder'; 
+        label.textContent = input.dataset.placeholder; 
+        wrapper.append(label);
+
+        input.addEventListener('focus', function() {
+            label.classList.add('active');
+        });
+
+
+        input.addEventListener('blur', function() {
+            if (input.value.trim() === '') {
+                label.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

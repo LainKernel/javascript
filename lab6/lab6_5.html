@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Show Prompt</title>
+    <style>
+        /* Полупрозрачный фон, перекрывающий всю страницу */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        /* Карточка самого модального окна */
+        .modal {
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            min-width: 300px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-family: sans-serif;
+        }
+        /* Поле ввода */
+        .modal input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            box-sizing: border-box;
+            font-size: 1rem;
+        }
+        /* Кнопки управления */
+        .modal button {
+            padding: 5px 15px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        /* Класс для блокировки прокрутки основного сайта */
+        .no-scroll {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+
+    <button id="showPromptBtn">Показать диалог</button>
+
+    <script>
+        'use strict';
+
+        function showPrompt(html, callback) {
+            // Запоминаем элемент, который был активен до открытия модалки
+            const focusedElement = document.activeElement;
+            
+            // Создаем элементы интерфейса
+            const overlay = document.createElement('div');
+            overlay.className = 'modal-overlay';
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal';
+            
+            const content = document.createElement('div');
+            content.innerHTML = html;
+            
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = 'prompt-input';
+            
+            const okBtn = document.createElement('button');
+            okBtn.textContent = 'OK';
+            const cancelBtn = document.createElement('button');
+            cancelBtn.textContent = 'ОТМЕНА';
+            
+            // Собираем DOM-дерево окна
+            modal.appendChild(content);
+            modal.appendChild(input);
+            modal.appendChild(okBtn);
+            modal.appendChild(cancelBtn);
+            overlay.appendChild(modal);
+            document.body.appendChild(overlay);
+            
+            // Блокируем прокрутку основного сайта
+            document.body.classList.add('no-scroll');
+            
+            // Сразу фокусируемся на инпуте без использования setTimeout
+            input.focus();
+            
+            // Функция закрытия окна
+            function close(result) {
+                // Обязательно удаляем глобальный слушатель, чтобы не засорять память
+                document.removeEventListener('keydown', handleGlobalKeys);
+                
+                overlay.remove();
+                document.body.classList.remove('no-scroll');
+                
+                // Возвращаем фокус на ту кнопку, с которой пользователь пришел
+                if (focusedElement && focusedElement.focus) {
+                    focusedElement.focus();
+                }
+                callback(result);
+            }
+            
+            // Обработка кликов мыши
+            okBtn.onclick = () => close(input.value);
+            cancelBtn.onclick = () => close(null);
+            
+            // Единая функция для обработки клавиш (Focus Trap + Горячие клавиши)
+            function handleGlobalKeys(e) {
+                // 1. Закрытие по нажатию Esc
+                if (e.key === 'Escape') {
+                    e.preventDefault();
+                    close(null);
+                }
+
+                // 2. Отправка по Enter (только если фокус находится в поле ввода)
+                if (e.key === 'Enter' && document.activeElement === input) {
+                    e.preventDefault();
+                    close(input.value);
+                }
+
+                // 3. Удержание фокуса внутри окна по нажатию Tab (Исправленный баг)
+                if (e.key === 'Tab') {
+                    const focusable = [input, okBtn, cancelBtn];
+                    const firstFocusable = focusable[0];
+                    const lastFocusable = focusable[focusable.length - 1];
+                    
+                    if (e.shiftKey) { // Если зажат Shift + Tab (движение назад)
+                        if (document.activeElement === firstFocusable) {
+                            e.preventDefault();
+                            lastFocusable.focus(); // Зацикливаем на последнюю кнопку
+                        }
+                    } else { // Обычный Tab (движение вперед)
+                        if (document.activeElement === lastFocusable) {
+                            e.preventDefault();
+                            firstFocusable.focus(); // Зацикливаем обратно на инпут
+                        }
+                    }
+                }
+            }
+
+            // Вешаем перехватчик событий на весь документ, а не на оверлей
+            document.addEventListener('keydown', handleGlobalKeys);
+        }
+        
+        // Навешиваем событие на кнопку запуска
+        document.getElementById('showPromptBtn').addEventListener('click', () => {
+            showPrompt("Введите что-нибудь<br>... умное:", function(value) {
+                alert(`Результат: ${value}`);
+            });
+        });
+    </script>
+</body>
+</html>

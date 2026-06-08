@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Задание 4: Редактируемая таблица</title>
+    <style>
+        /* Обязательное требование ТЗ: изменение размера ячейки должно быть отключено */
+        table textarea {
+            resize: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Таблица с ячейками, редактируемыми по клику</h2>
+    
+    <!-- Используем стандартные HTML-атрибуты для оформления рамок и отступов -->
+    <table border="1" id="editableTable" cellpadding="10" cellspacing="0">
+        <tr>
+            <td>Ячейка 1-1</td>
+            <td>Ячейка 1-2</td>
+            <td>Ячейка 1-3</td>
+        </tr>
+        <tr>
+            <td>Ячейка 2-1</td>
+            <td>Ячейка 2-2</td>
+            <td>Ячейка 2-3</td>
+        </tr>
+        <tr>
+            <td>Ячейка 3-1</td>
+            <td>Ячейка 3-2</td>
+            <td>Ячейка 3-3</td>
+        </tr>
+    </table>
+
+    <script>
+        'use strict';
+
+        const table = document.getElementById('editableTable');
+        let isEditing = false; 
+
+        // 1. Восстановление сохраненных данных из sessionStorage
+        const rows = table.rows;
+        for (let r = 0; r < rows.length; r++) {
+            for (let c = 0; c < rows[r].cells.length; c++) {
+                const savedValue = sessionStorage.getItem(`cell_${r}_${c}`);
+                if (savedValue !== null) {
+                    rows[r].cells[c].innerHTML = savedValue;
+                }
+            }
+        }
+
+        // 2. Делегирование событий
+        table.addEventListener('click', function(event) {
+            const td = event.target.closest('td');
+            
+            if (!td || isEditing) return;
+
+            const originalHTML = td.innerHTML;
+            isEditing = true;
+
+            // Создаем текстовое поле (размеры задаем через rows/cols, а запрет resize — в CSS сверху)
+            const textarea = document.createElement('textarea');
+            textarea.rows = 4;
+            textarea.cols = 20;
+            textarea.value = originalHTML;
+
+            // Блок кнопок
+            const controls = document.createElement('div');
+
+            const okButton = document.createElement('button');
+            okButton.textContent = 'ОК';
+
+            const cancelButton = document.createElement('button');
+            cancelButton.textContent = 'ОТМЕНА';
+
+            controls.append(okButton, cancelButton);
+
+            // Заменяем содержимое ячейки на форму редактирования
+            td.innerHTML = '';
+            td.append(textarea, controls);
+            textarea.focus();
+
+            function finishEdit(htmlResult, shouldSave) {
+                td.innerHTML = htmlResult;
+                isEditing = false;
+
+                if (shouldSave) {
+                    const cellIndex = td.cellIndex;
+                    const rowIndex = td.parentElement.rowIndex;
+                    sessionStorage.setItem(`cell_${rowIndex}_${cellIndex}`, htmlResult);
+                }
+            }
+
+            okButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                finishEdit(textarea.value, true);
+            });
+
+            cancelButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                finishEdit(originalHTML, false);
+            });
+        });
+    </script>
+</body>
+</html>
