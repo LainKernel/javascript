@@ -6,7 +6,7 @@ document.getElementById('numbLink').addEventListener('click', function(event) {
     if (!success){
         const allowTransition = confirm("Вы не ввели нужное число. Вы всё равно хотите перейти на главную страницу?");
         if (!allowTransition) {
-            event.preventDefault();
+            window.location.href = 'index.html';
         }
     }
 
