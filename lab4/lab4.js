@@ -105,6 +105,14 @@ myBook.title = "Совершенный код";
 myBook.price = 1800;
 console.log(`Измененное название: ${myBook.title}, измененная цена: ${myBook.price}`);
 
+try {
+    console.log("\nПопытка установить отрицательный год публикации...");
+    const badBook = new Book("Книга D", -100, 500);
+} catch (error) {
+    console.log(`Успешно перехвачено: ${error.message}`);
+}
+
+
 // Пример сортировки через статический метод compare
 const books = [
     new Book("Книга С", 2020, 500),
