@@ -100,7 +100,7 @@ console.log("--- Задания 1, 2, 3: Класс Book ---");
 const myBook = new Book("Чистый код", 2008, 1500);
 myBook.show(); // Выведет: Книга: "Чистый код", Цена: 1500 руб.
 
-// Проверка геттеров/сеттеров и изменения свойств
+
 myBook.title = "Совершенный код";
 myBook.price = 1800;
 console.log(`Измененное название: ${myBook.title}, измененная цена: ${myBook.price}`);
@@ -109,7 +109,19 @@ try {
     console.log("\nПопытка установить отрицательный год публикации...");
     const badBook = new Book("Книга D", -100, 500);
 } catch (error) {
-    console.log(`Успешно перехвачено: ${error.message}`);
+    console.log(`Ошибка: ${error.message}`);
+}
+try {
+    console.log("\nПопытка установить отрицательную цену книге...");
+    const badBook2 = new Book("Книга E", 100, -500);
+} catch (error) {
+    console.log(`Ошибка: ${error.message}`);
+}
+try {
+    console.log("\nПопытка установить пустое название книге...");
+    const badBook3 = new Book("", 100, -500);
+} catch (error) {
+    console.log(`Ошибка: ${error.message}`);
 }
 
 
