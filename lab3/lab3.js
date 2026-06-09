@@ -92,8 +92,8 @@ export function arrReverseSorted(arr) {
 
 /**
  * Возвращает массив уникальных значений из исходного массива
- * @param {any[]} arr - Исходный массив с возможными повторениями
- * @returns {any[]} Массив уникальных значений
+ * @param {Array} arr - Исходный массив с возможными повторениями
+ * @returns {Array} Массив уникальных значений
  */
 export function unique(arr) {
     return [...new Set(arr)];
